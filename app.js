@@ -99,6 +99,7 @@ const dn=c=>P[c.id]||[],tot=()=>COURSES.reduce((a,c)=>a+dn(c).length,0),N=65;
 const mins=c=>c.lessons.reduce((a,l)=>a+l.m,0);
 const first=c=>{for(let i=0;i<c.lessons.length;i++)if(dn(c).indexOf(i)<0)return i;return 0};
 let loan;try{loan=JSON.parse(localStorage.getItem('mc-loan')||'null')}catch(e){}loan=loan||{amt:400,weeks:6};
+try{const q=new URLSearchParams(location.search),a=+q.get('amt'),w=+q.get('weeks');if(a>=50&&a<=1500)loan.amt=a;if(w>=2&&w<=12)loan.weeks=w;if(q.get('amt')||q.get('weeks')){try{localStorage.setItem('mc-loan',JSON.stringify(loan))}catch(e){}}}catch(e){}
 const calc=()=>{const c=Math.round((loan.amt+loan.amt*.14*loan.weeks/52)*100),p=Math.floor(c/loan.weeks);return{total:c/100,pay:p/100}};
 
 if(page=='index'){
@@ -109,10 +110,10 @@ if(page=='index'){
 }
 if(page=='simuler'){
   const b=$('#submitLoanRequestBtn');if(b)b.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();
-    try{localStorage.setItem('mc-loan',JSON.stringify({amt:+$('#amountSlider').value,weeks:+$('#durationSlider').value}))}catch(x){}location.href='demande.html'},true);
+    const A=+$('#amountSlider').value,W=+$('#durationSlider').value;try{localStorage.setItem('mc-loan',JSON.stringify({amt:A,weeks:W}))}catch(x){}location.href='demande.html?amt='+A+'&weeks='+W},true);
 }
 if(page=='demande'){
-  const c=calc();rep(/^\s*400,00 \$\s*$/,cad(loan.amt));rep(/\/ 6 semaines/,'/ '+loan.weeks+' semaines');rep(/66,67 \$/,cad(c.pay));
+  const c=calc();rep(/^\s*400,00\s*\$\s*$/,cad(loan.amt));rep(/\/ \d+ semaines/,'/ '+loan.weeks+' semaines');rep(/66,67\s*\$/,cad(c.pay));
   
   const u=$('#university');if(u)u.value='Université de Sherbrooke';
   const sel=$('#loan_purpose');if(sel)sel.innerHTML='<option value="">Choisir…</option><option>Loyer</option><option>Alimentation</option><option>Transport</option><option>Matériel scolaire</option><option>Autre</option>';
