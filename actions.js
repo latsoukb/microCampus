@@ -97,7 +97,7 @@ if(page=='offres'){
 /* ---- PROFIL ---- */
 if(page=='profil'){
  $$('[data-go]').forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g=='aide')aideSheet();else if(g=='loan')loanSheet();else location.href=g});
- const mark=()=>{const t=get('mc-theme',null)||'auto';$$('[data-th]').forEach(b=>{const on=b.dataset.th==t;b.className='flex-1 h-11 rounded-xl font-label-md '+(on?'bg-secondary text-on-secondary':'bg-surface-container text-on-surface-variant')})};
+ const mark=()=>{let t=null;try{t=localStorage.getItem('mc-theme')}catch(e){}if(t)t=t.replace(/^"|"$/g,'');t=t||'auto';$$('[data-th]').forEach(b=>{const on=b.dataset.th==t;b.className='flex-1 h-11 rounded-xl font-label-md '+(on?'bg-secondary text-on-secondary':'bg-surface-container text-on-surface-variant')})};
  $$('[data-th]').forEach(b=>b.onclick=()=>{const t=b.dataset.th;try{if(t=='auto')localStorage.removeItem('mc-theme');else localStorage.setItem('mc-theme',t)}catch(e){}
   document.documentElement.classList.toggle('dark',t=='dark'||(t=='auto'&&matchMedia('(prefers-color-scheme: dark)').matches));const ic=document.querySelector('#mc-theme .material-symbols-outlined');if(ic)ic.textContent=document.documentElement.classList.contains('dark')?'light_mode':'dark_mode';mark()});
  mark();
